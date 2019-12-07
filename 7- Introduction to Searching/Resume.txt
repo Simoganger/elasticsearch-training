@@ -1,0 +1,14 @@
+================================
+# RESUME
+================================
+
+- Ce module présente de façon sommaire les commandes élementaire de recherche avec Elasticsearch;
+- Il existe 2 façons d'écrire les requête de recherche avec Elasticsearch
+	* DSL (format JSON, plus flexible) avec des requêtes feuille et des requêtes composées
+	* URI (embarquer les paramètres de recherche dans la requête)
+- Il existe deux contexts d'éxécution des requêtes de recherche
+	* Context de la requête
+	* Context du filtre
+- Il existe 2 groupes de requêtes
+	* Requete orientées termes (recherche exact)
+	* Requete full texte (recherche approchée, le texte est d'abord analysé avant la recherche)

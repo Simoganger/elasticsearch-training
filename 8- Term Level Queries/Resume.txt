@@ -1,0 +1,6 @@
+================================
+# RESUME
+================================
+
+- Ce module se focalise sur la première méthode de recherche dans Elasticsearch (recherche orientée terme ou recherche exacte)
+- Remarquer que les requêtes utilisant un joker (* ou ?) ont un cout sur la performance

@@ -1,0 +1,7 @@
+================================
+# RESUME
+================================
+
+Ce module présente les opérations de base dans ElasticSearch (Création des index, ajout, remplacement, modification, suppression des documents, la suppression des index 
+et des documents suivant certaines propriétés)
+Remarque: La modification des données dans ElasticSearch suivant un critère n'est pas encore disponible (version 6.4.2 du produit)

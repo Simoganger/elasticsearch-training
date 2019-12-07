@@ -1,0 +1,203 @@
+# Créer un index produit test
+PUT /produits?pretty
+
+# Inserer quelques produits
+POST /produits/_doc/1
+{
+  "nom":"savon",
+  "variete": "azur",
+  "quantite":18,
+  "description":"Un produit cosmétique"
+}
+
+POST /produits/_doc/2
+{
+  "nom":"riz",
+  "variete": "neima",
+  "quantite":29,
+  "description":"Produit alimentaire très prisé dans les ménages"
+}
+
+POST /produits/_doc/3
+{
+  "nom":"riz",
+  "variete": "paddy",
+  "quantite":108,
+  "description":"Aliment complémnetaire des cuisines"
+}
+
+POST /produits/_doc/4
+{
+  "nom":"spaghetti",
+  "variete": "broli",
+  "quantite":87,
+  "description":"Une varieté apropriée pour les repas en famille"
+}
+
+POST /produits/_doc/5
+{
+  "nom":"bonbon",
+  "variete": "kola",
+  "quantite":9,
+  "description":"Bonbon kola est un produit possédant une saveur menthol"
+}
+
+
+POST /produits/_doc/6
+{
+  "nom":"lait",
+  "variete": "nido",
+  "quantite":18,
+  "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel diam sit amet tortor dignissim dapibus et eget ipsum. Vestibulum lobortis interdum enim, sit amet faucibus metus laoreet eget. Sed consectetur, diam sit amet laoreet imperdiet, enim lorem convallis libero, sit amet gravida sem ante at lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam tempor, metus vel maximus fringilla, elit sem congue ligula, at viverra erat lectus imperdiet neque. Sed vel fermentum metus, semper pharetra nunc. Mauris ultricies laoreet ante a feugiat. Aliquam nec quam felis. Etiam scelerisque eu ante et lobortis. Maecenas rutrum dictum leo, id bibendum arcu malesuada non. In sed tortor nec velit tincidunt consectetur. Vivamus sagittis mi id mi porttitor tempor. Proin ultrices vitae mauris vitae elementum. Cras semper rhoncus ante sit amet fermentum."
+}
+
+POST /produits/_doc/7
+{
+  "nom":"sucre",
+  "variete": "dethom",
+  "quantite":32,
+  "description":"Duis porttitor tempus sem eget interdum. Suspendisse eget neque eu justo imperdiet rutrum vitae eget tortor. Integer finibus vel magna in condimentum. Vestibulum a nisi ultricies, rhoncus magna et, rhoncus ligula. Phasellus feugiat mi vitae rutrum facilisis. Aenean ullamcorper et erat sit amet mattis. Etiam molestie est vel varius aliquam. Aliquam non erat a elit tincidunt laoreet ac a libero. Vestibulum nulla ex, lacinia ac enim molestie, hendrerit scelerisque ante. Ut posuere ullamcorper mattis. Praesent eu ex volutpat, lacinia erat eu, pretium risus. Donec porttitor eros vel mi accumsan molestie. Donec eleifend aliquam lectus, ac volutpat augue vehicula et."
+}
+
+POST /produits/_doc/8
+{
+  "nom":"biscuit",
+  "variete": "parle G",
+  "quantite":6,
+  "description":"Curabitur vulputate consequat elit in venenatis. Cras est odio, finibus vel erat eget, vulputate tempor urna. Cras porta fermentum magna, eget dictum nibh volutpat ac. Pellentesque posuere velit ut sollicitudin accumsan. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec id porttitor odio. Maecenas volutpat finibus erat eget tincidunt. Fusce quis massa tempor, volutpat est eu, sagittis odio. Vestibulum id sem sit amet sem ultricies fringilla. "
+}
+
+POST /produits/_doc/9
+{
+  "nom":"biscuit",
+  "variete": "choco tom",
+  "quantite":63,
+  "description":" Proin mollis, metus at viverra laoreet, mauris mauris commodo est, suscipit malesuada leo eros ut dolor. Pellentesque sit amet eros sit amet urna cursus ultricies. Integer ac metus ut mi porttitor iaculis. Aenean pulvinar, est sit amet congue suscipit, velit dui pellentesque neque, et feugiat odio risus eget tellus. Curabitur pellentesque, elit non porta pellentesque, elit mauris bibendum velit, id gravida nisi magna nec nisi. Aenean volutpat convallis est a laoreet."
+}
+
+POST /produits/_doc/10
+{
+  "nom":"bonbon",
+  "variete": "kola",
+  "quantite":2,
+  "description":"Phasellus et ipsum justo. Ut arcu sem, pretium vitae dapibus et, hendrerit in purus. Duis eu sem massa. Proin at massa id dui sodales tincidunt. Integer sagittis malesuada dictum. Phasellus tempus eget neque sodales placerat. Mauris venenatis eu ante ac pulvinar. Cras vestibulum nibh vel ipsum porttitor condimentum non vel tortor. Ut eu risus sit amet dolor volutpat molestie. Curabitur rhoncus lectus vitae arcu vulputate, at egestas tortor dignissim. Aenean est justo, bibendum ac dapibus id, ullamcorper eu est. Donec efficitur egestas sem vitae imperdiet. Sed egestas felis pulvinar rhoncus posuere. Cras euismod nisi eu mauris porta, ac laoreet nunc placerat. Proin ac mi at risus pretium ullamcorper."
+}
+
+
+# Un exemple de recherche stricte sur les produits
+GET /produits/_search
+{
+  "query": {
+    "match_phrase": {
+      "description": {
+        "query": "metus mauris"
+      }
+    }
+  }
+}
+
+# Un exemple de recherche avec flexibilité sur les produits (saut de 3 mots)
+GET /produits/_search
+{
+  "query": {
+    "match_phrase": {
+      "description": {
+        "query": "metus mauris",
+        "slop": 3
+      }
+    }
+  }
+}
+
+# Une autre requête plus flexible qui ne tien pas compte de la distance entre les mots
+GET /produits/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "description": {
+              "query": "metus mauris"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Un exemple de recherche avec non prise en compte de l'erreur de frappe côt utilisateur, 0 en lieu et place de o
+GET /produits/_search
+{
+  "query": {
+    "match": {
+      "description": {
+        "query": "d0lor"
+      }
+    }
+  }
+}
+
+# Ajout de la technique de la recherche floue pour traiter le mot éroné
+GET /produits/_search
+{
+  "query": {
+    "match": {
+      "description": {
+        "query": "d0lor",
+        "fuzziness": "auto"
+      }
+    }
+  }
+}
+
+# Recherche floue par transposition
+GET /produits/_search
+{
+  "query": {
+    "match": {
+      "variete": {
+        "query": "okla",
+        "fuzziness": 1
+      }
+    }
+  }
+}
+
+# Recherche par une requête floue (fuzzy) de nature (term-level, non analysé)
+GET /produits/_search
+{
+  "query": {
+    "fuzzy": {
+      "variete": {
+        "value": "KOLA",
+        "fuzziness": "auto"
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

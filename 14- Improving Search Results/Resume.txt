@@ -1,0 +1,11 @@
+================================
+# RESUME
+================================
+ Ce module de formation insiste sur les techniques utilisées par Elasticsearch pour produire de meilleurs résultats lors d'une recherche. Ces techniques sont par exemple :
+ - L'ajout des synonymes,
+ - La localisation des mots pour y mettre de l'emphase (highlight),
+ - La recherche de proximité, etc
+ 
+ L'objectif global étant de ne pas rendre la recherche stricte, mais plutôt flexible pour obtenir des résultats diversifiés. Ceci en tenant compte de tout type d'entrée de la part
+ de l'utilisateur.
+ 

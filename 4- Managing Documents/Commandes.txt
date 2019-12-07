@@ -1,0 +1,121 @@
+# Création d'un index
+PUT /user?pretty
+
+# Ajout d'un document à un index avec _id généré
+POST /user/default
+{
+  "firstName":"NGANG",
+  "lastName":"Simon",
+  "address":{
+    "city":"Douala",
+    "phone":"+693260063",
+    "street":"Cité des palmiers"
+  }
+}
+
+# Ajout d'un document à un index avec _id fixé
+PUT /user/default/1
+{
+  "firstName":"ELAD",
+  "lastName":"Simon",
+  "address":{
+    "city":"Douala",
+    "phone":"+679698881",
+    "street":"Bonamoussadi"
+  }
+}
+
+# Retrouver un document suivant son id
+GET /user/default/1
+
+# Remplacer un document
+PUT /user/default/1
+{
+  "firstName":"YIN",
+  "lastName":"Shinli Tee",
+  "address":{
+    "city":"Beijing",
+    "phone":"+00861124547",
+    "street":"44, Beijing"
+  }
+}
+
+# Mettre à jour un document
+POST /user/default/1/_update
+{
+  "doc":{
+    "age":25,
+    "lastName":"Xuan Lee"
+  }
+}
+
+# Scripting (incrémentons l'age de 5)
+POST /user/default/1/_update
+{
+  "script": "ctx._source.age += 5"
+}
+
+# Modification des propriétés d'un document ou création avec upsert
+POST /user/default/1/_update
+{
+  "script": "ctx._source.age += 5",
+  "upsert": {
+    "age":24
+  }
+}
+
+# Suppression d'un document
+DELETE /user/default/1
+
+# Creation d'un autre index book pour illustrer la suppression
+PUT /book?pretty
+
+PUT /book/default/1
+{
+  "title":"Programming in Java",
+  "author":"ELAD Simon",
+  "category":"Book"
+}
+
+PUT /book/default/2
+{
+  "title":"HTML Scripting",
+  "author":"YOUSSOUF Hilaire",
+  "category":"Report"
+}
+
+PUT /book/default/3
+{
+  "title":"Spring Boot Skills",
+  "author":"KEITA Jion",
+  "category":"Book"
+}
+
+GET /book/default/1
+GET /book/default/2
+GET /book/default/3
+
+
+# Suppression des documents suivant un champ
+POST /book/_delete_by_query
+{
+  "query": {
+    "match":{
+      "category":"Book"
+    }
+  }
+}
+
+# Suppression d'un index
+DELETE /book
+
+# Execution des commandes en batch
+POST /user/default/_bulk
+{"index": {"_id":"100"}}
+{"name":"ZOUGO"}
+{"index": {"_id":"101"}}
+{"name":"ALOME"}
+
+GET /user/default/100
+GET /user/default/101
+

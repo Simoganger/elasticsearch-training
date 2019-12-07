@@ -1,0 +1,8 @@
+================================
+# RESUME
+================================
+
+- Ce module présente la deuxième technique de recherche avec Elasticsearch (Recherche Full Text). C'est la technique la plus flexible puisque la recherche n'est pas 
+exacte suivant le paramètre de recherche.
+
+- L'avantage de cette façon de rechercher est que le resultat de la recherche n'est pas déteriniste dû à la flexibilité de la recherche.

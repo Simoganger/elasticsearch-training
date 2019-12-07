@@ -1,0 +1,45 @@
+# Recherche full text suivant un champ
+GET /user/_search
+{
+  "query":{
+    "match":{
+      "title":"Developpement is a great job"
+    }
+  }
+}
+
+# Obliger que tous les termes d'une phrase apparaissent dans un même document
+GET /user/_search
+{
+  "query":{
+    "match":{
+      "title":{
+        "query":"Developpement is a great job",
+        "operator": "and"
+      }
+    }
+  }
+}
+
+# Recherche suivant l'ordre des mots dans une phrase
+GET /user/_search
+{
+  "query":{
+    "match_phrase":{
+      "title":"great developper"
+    }
+  }
+}
+
+# Recherche sur plusieurs champs
+GET /user/_search
+{
+  "query":{
+    "multi_match":{
+      "query":"developper",
+      "fields": ["title","description"]
+    }
+  }
+}
+
+

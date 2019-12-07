@@ -1,0 +1,51 @@
+# Formatage des resultats d'une requête
+GET /user/_search?format=yaml
+{
+  "query": {
+    "match": {
+      "firstName": "ngang"
+    }
+  }
+}
+
+# Limitation du contenu de sortie avec _source
+GET /user/_search
+{
+  "_source":false,
+  "query": {
+    "match": {
+      "firstName": "ngang"
+    }
+  }
+}
+
+# Limitation du nombre de documents à afficher
+# Utile pour la pagination
+GET /faculty/_search?size=2
+
+
+# Récuếration des données en limitant la taille du résultat et en précisant à partir de quel offset lister
+GET /user/_search
+{
+  "_source":false,
+  "size":2,
+  "from":0,
+  "query": {
+    "match": {
+      "firstName": "ngang"
+    }
+  }
+}
+
+# Trier les résultats d'une recherche
+GET /user/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+   "_id"
+  ]
+}
+
+

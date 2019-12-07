@@ -1,0 +1,13 @@
+================================
+# RESUME
+================================
+
+- Ce module présente la technique utilisée pour parser et normaliser un texte sur lequel doit porter une recherche.
+- De façon générale, un Analyseur = Filtre de caractèrs + Filtres + Tokenizer.
+- Il existe plusieurs types d'analyseurs parmi lesquels l'analyseur standard.
+- Les portées d'analyse sont: 
+	* la propriété d'un document,
+	* l'index lui même
+	* l'analyse standard
+- Le résultat de l'analyse est stocké sous forme d'index inversé pour faciliter la recherche
+- Il est possible de customiser les analyseurs existants ou d'en créer de nouveaux

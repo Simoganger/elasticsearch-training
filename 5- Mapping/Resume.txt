@@ -1,0 +1,13 @@
+================================
+# RESUME
+================================
+
+Ce module présente le concept de mapping qui est un processus qui définit comment un document et ses champs sont stockés et indexés. On distingue les mappings 
+dynamiques (implicites) et explicites.
+
+- Un ensemble de méta-champs (_index, _type (déprécié), _id, _source, _size, _field_names, _ignored,  _routing, _meta, _version) au total 10, 
+permettent de garder les informations supplémntaires d'indexation d'un document.
+ 
+- Le concept de Mapping de type est déprécié à partir de la version 7.0.0 de Elasticsearch
+... For these reasons, we have decided to remove the concept of mapping types from Elasticsearch. 
+(source : https://www.elastic.co/guide/en/elasticsearch/reference/current/removal-of-types.html)

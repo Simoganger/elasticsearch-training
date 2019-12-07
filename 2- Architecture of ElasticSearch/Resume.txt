@@ -1,0 +1,17 @@
+================================
+# RESUME
+================================
+
+Ce module présente en profondeur l'architecture interne de ElasticSearch qui est composée de :
+1- Cluster : Ensemble de serveur hébergeant ElasticSearch
+2- Node: une des machine du cluster
+3- Index : Structuration primaire du stockage de données dans ElasticSearch
+4- Shard : Subdivision d'un index pour en faire des unités de stockage élémentaires (Sharding)
+Remarque : le concept de Type est déprécié à partir de la version 7.0.0 de ElasticSearch
+====
+Une fois cette subdivision logique faite, des opérations suivantes peuvent être effectuées
+1- Replication: process consistant à dupliquer des shards pour assurer la tolérance aux pannes et la recherche en parallèle
+2- La synchronisation des données permet de s'assurer qu'un document est mis à jour sur tous les replicas, ceci se fait grâce au shard lead qui met à jour les replicas avant de notifier le
+	client qui effectue la mise à jour ou la suppression du document
+3- Le principe de recherche se passe par indexation d'un noeud (Node) aléatoire, qui ensuite broadcast l'information aux autres noeuds
+4- L'écriture d'un document dans ElasticSearch utilise le principe de routage (utilisation d'une onction de hachage pour retrouver le shard approprié sur lequel écrire le document)

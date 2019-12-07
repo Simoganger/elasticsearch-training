@@ -1,0 +1,5 @@
+================================
+# RESUME
+================================
+ Ce module de formation présente le controle qui peut être appliqué sur les résultats obtenus à la suite d'une recherche (trier, paginer, filtrer, limiter le
+ nombre de documents à afficher).

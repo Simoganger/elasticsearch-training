@@ -1,0 +1,122 @@
+# Recherche exact suivant un critère
+GET /user/_search
+{
+  "query":{
+    "term":{
+      "lastName":"simon"
+    }
+  }
+}
+
+# Recherche suivant un critère avec possibilité d'ajouter des options
+GET /user/_search
+{
+  "query":{
+    "term":{
+      "lastName":{
+        "value":"simon"
+      }
+    }
+  }
+}
+
+# Recherche suivant plusieurs termes
+GET /user/_search
+{
+  "query":{
+    "terms":{
+      "name.keyword":[
+          "ZOUGO",
+          "ALOME"
+      ]
+    }
+  }
+}
+
+# Recherche des documents suivant les identifiants
+GET /user/_search
+{
+  "query":{
+    "ids":{
+      "values":[
+          "100",
+          "101"
+      ]
+    }
+  }
+}
+
+# Recherche suivant un intervalle de valurs
+GET /user/_search
+{
+  "query":{
+    "range":{
+      "in_stock":{
+         "gte":1,
+         "lte":5
+      }
+    }
+  }
+}
+
+# Recherche suivant un intervalle de date avec calcul sur les dates
+GET /user/_search
+{
+  "query":{
+    "range":{
+      "birth":{
+         "gte":"2014/02/11||-1y-1d"
+      }
+    }
+  }
+}
+
+# Recherche des documents avec un champ non nul pour tous
+GET /user/_search
+{
+  "query":{
+    "exists":{
+      "field":"name"
+    }
+  }
+}
+
+# Recherche à partir des préfixes
+GET /user/_search
+{
+  "query":{
+    "prefix":{
+      "name.keyword":"AL"
+    }
+  }
+}
+
+# Recherche avec des jokers (wildcard) * (toute suite de caractère) ou ? (un caractère quelconque)
+GET /user/_search
+{
+  "query":{
+    "wildcard":{
+      "name.keyword":"A*E"
+    }
+  }
+}
+
+# Recherche avec des expressions régulières
+GET /user/_search
+{
+  "query":{
+    "regexp":{
+      "name.keyword":"A[a-zA-Z]+E"
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+

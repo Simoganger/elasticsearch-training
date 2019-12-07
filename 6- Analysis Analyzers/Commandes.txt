@@ -1,0 +1,134 @@
+# Remarque: certaines des commandes utilisées dans le cadre de cette formation sont dépréciées, pour la version 7.4.2 de Elasticsearch,
+# Je me réfère à la documentation officielle de Elasticsearch
+
+# Exemple d'analyse d'un texte simple avec un analyseur spécifique
+POST _analyze
+{
+  "analyzer": "whitespace",
+  "text": "I'm in the mood for drinking semi-dry red wine!"
+}
+ 
+# Un exemple avec l'analyseur (Tokenizer) standard couplé d'un filtre
+POST _analyze
+{
+  "tokenizer": "standard",
+  "filter": [ "lowercase", "asciifolding" ],
+  "text": "I'm in the mood for drinking semi-dry red wine!"
+}
+
+# Parametrage d'un analyseur existant avec filtre
+PUT /existing_analyzer_config
+{
+  "settings":{
+    "analysis":{
+      "analyzer":{
+        "english_stop":{
+          "type":"standard",
+          "stopwords":"_english_"
+        }
+      },
+      "filter": {
+        "my_stemmer":{
+          "type":"stemmer",
+          "name":"english"
+        }
+      }
+    }
+  }
+}
+
+# Test de l'analyseur configuré
+POST /existing_analyzer_config/_analyze
+{
+  "analyzer":"english_stop",
+  "text": "I'm in the mood for drinking semi-dry red wine!"
+}
+
+
+# Test de l'analyseur configuré en utilisant le filtre
+POST /existing_analyzer_config/_analyze
+{
+  "tokenizer":"standard",
+  "filter": ["my_stemmer"], 
+  "text": "I'm in the mood for drinking semi-dry red wine!"
+}
+
+
+# Création d'un analyseur from scratch
+# Remarque : dans le script de la formation, le filtre standard a été ajouté lors de la création de l'analyseur
+# dans la version 7.4.2 de Elasticsearch, le filtre standard a été retiré
+PUT /analyzers_custom
+{
+  "settings":{
+    "analysis":{
+      "analyzer":{
+        "english_stop":{
+          "type":"standard",
+          "stopwords":"_english_"
+        },
+        "my_analyzer":{
+          "type":"custom",
+          "tokenizer":"standard",
+          "char_filter": [
+            "html_strip"  
+          ],
+          "filter":[
+            "lowercase",
+            "trim",
+            "my_stemmer"
+          ]
+        }
+      },
+      "filter": {
+        "my_stemmer":{
+          "type":"stemmer",
+          "name":"english"
+        }
+      }
+    }
+  }
+}
+
+# Utilisation de l'analyseur crée
+POST /analyzers_custom/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text":"I'm in the mood for drinking <strong>semi-dry</strong> red wine !"
+}
+
+# Ajout d'une analyseur dans le mapping d'un index lors de sa définition
+PUT /analyzers_custom/_mapping
+{
+  "properties":{
+    "description":{
+      "type":"text",
+      "analyzer":"my_analyzer"
+    },
+    "subject":{
+      "type":"text",
+      "analyzer":"standard"
+    }
+  }
+}
+
+# Ajout de l'analyseur sur un index existant
+# Fermer d'abord l'index
+POST /analyzers_custom/_close
+
+# Ajouter l'analyseur
+PUT /analyzers_custom/_settings
+{
+  "analysis":{
+    "analyzer":{
+      "french_stop":{
+        "type":"standard",
+        "stopwords":"_french_"
+      }
+    }
+  }
+}
+
+# Ouvrir l'index de nouveau pour rendre l'analyseur disponible
+POST /analyzers_custom/_open
+
+

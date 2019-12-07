@@ -1,0 +1,17 @@
+================================
+# RESUME
+================================
+ Ce module de formation présente comment gérer les relations entre documents avec Elasticsearch. On distingue globalement 2 techniques de gestion des relations :
+ - Imbriquer un document dans un autre (solution assez lourde)
+ - Créer un mapping sur le document en utilisant le concept de jointure
+ 
+ Il existe cependant des avantages et des inconvénients de la deuxième approche :
+ - Inconvénients :
+	* Les documents sur lesquels la jointure est effectuée doivent être sur le même index
+	* Un document et son parent doivent être indexé sur le même shard
+	* un seul champ 'join_field' est autorisé par index
+	* Un document ne peux avoir qu'un seul parent (many-to-one uniquement accepté)
+ - Avantages :
+	* Idéal dans les cas où la base de données est constituée de plusieurs relations père/fils avec des documents père qui possèdent un nombre élevé de fils
+	* Très utile lorsqu'on dispose de plusieurs documents dont la structure varient peu dans le temps
+	* Elasticsearch est optimisé pour effectuer la recherche si les documents sont imbriqués de cette façon

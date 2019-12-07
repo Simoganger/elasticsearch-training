@@ -1,0 +1,30 @@
+# Recherche simple avec les paramètres embarqués dans la requête
+# Rechercher tout dans un index
+GET /user/_search?q=*
+
+# Rechercher les documents dont un champ contien une valeur
+GET /user/_search?q=lastName=Simon
+
+# Ajouter une condition booléenne dans la recherche
+GET /user/_search?q=lastName=Simon AND city=Douala
+
+
+# Requete avec le DSL de recherche prévu dans Elasticsearch
+
+# Affichage de tous les documents d'un index avec le DSL de requête
+GET /user/_search
+{
+  "query":{
+    "match_all": {}
+  }
+}
+
+# Recherche suivant un critère
+GET /user/_search
+{
+  "query":{
+    "match":{
+      "lastName":"Simon"
+    }
+  }
+}

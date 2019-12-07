@@ -1,0 +1,462 @@
+# Crée un index en spécifiant un mapping explicite
+PUT /department
+{
+  "mappings":{
+    "properties": {
+      "name":{
+        "type": "text"
+      },
+      "employees":{
+        "type":"nested"
+      }
+    }
+  }
+}
+
+# Ajouter les données à l'index avec les données embarquées
+POST /department/_doc/1
+{
+  "name":"Development",
+  "employees":[
+    {
+      "name":"Eric Green",
+      "age":39,
+      "gender":"M",
+      "position":"Big Data Specialist"
+    },
+    {
+      "name":"James Taylor",
+      "age":27,
+      "gender":"M",
+      "position":"Software Developer"
+    },
+    {
+      "name":"Gary Jenkins",
+      "age":21,
+      "gender":"M",
+      "position":"Intern"
+    },
+    {
+      "name":"Julie Powell",
+      "age":26,
+      "gender":"F",
+      "position":"Intern"
+    },
+    {
+      "name":"Benjamin Smidth",
+      "age":36,
+      "gender":"M",
+      "position":"Senior Software Engineer"
+    }
+  ]
+}
+
+# Ajouter un autre département avec ses données
+POST /department/_doc/2
+{
+  "name":"HR & Marketing",
+  "employees":[
+    {
+      "name":"Patricia Lewis",
+      "age":39,
+      "gender":"F",
+      "position":"Senior Marketing Manager"
+    },
+    {
+      "name":"Maria Anderson",
+      "age":56,
+      "gender":"F",
+      "position":"Head of HR"
+    },
+    {
+      "name":"Margaret Harris",
+      "age":19,
+      "gender":"F",
+      "position":"Intern"
+    },
+    {
+      "name":"Ryan Nelson",
+      "age":31,
+      "gender":"M",
+      "position":"Marketing Manager"
+    },
+    {
+      "name":"Kathy Williams",
+      "age":49,
+      "gender":"F",
+      "position":"Marketing Manager"
+    }
+  ]
+}
+
+# Une première façon eronnée de requêter les objets imbriqués
+GET /department/_search
+{
+  "query":{
+    "bool":{
+      "must": [
+        {
+          "match": {
+            "employees.position": "intern"
+          }
+        },
+        {
+          "term": {
+            "employees.gender.keyword": {
+              "value": "F"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Une façon correcte de requeter les champs imbriqués avec 'nested' query
+GET /department/_search
+{
+  "query": {
+    "nested": {
+      "path": "employees",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "employees.position": "intern"
+              }
+            },
+            {
+              "term": {
+                "employees.gender.keyword": {
+                  "value": "F"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+# Requête pour extraire uniquement les objets embarqués qui respectent la condition
+GET /department/_search
+{
+  "_source":false,
+  "query": {
+    "nested": {
+      "path": "employees",
+      "inner_hits": {}, 
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "employees.position": "intern"
+              }
+            },
+            {
+              "term": {
+                "employees.gender.keyword": {
+                  "value": "F"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+# Definition d'une relation entre documents
+PUT /faculty
+{
+  "mappings": {
+    "properties": {
+      "join_field":{
+        "type":"join",
+        "relations":{
+          "faculty":"student"
+        }
+      }
+    }
+  }
+}
+
+# Définir le champ qui servira une sorte de 'clé étrangère'
+PUT /faculty/_doc/1
+{
+  "name": "Sciences",
+  "join_field": "faculty"
+}
+
+PUT /faculty/_doc/2
+{
+  "name": "History",
+  "join_field": "faculty"
+}
+
+# Ajout des documents imbriqués dans le document parent
+PUT /faculty/_doc/3?routing=1
+{
+  "name":"Bo Anderson",
+  "age":21,
+  "gender":"M",
+  "join_field":{
+    "name":"student",
+    "parent":1
+  }
+}
+
+PUT /faculty/_doc/4?routing=2
+{
+  "name":"John Doe",
+  "age":19,
+  "gender":"M",
+  "join_field":{
+    "name":"student",
+    "parent":2
+  }
+}
+
+PUT /faculty/_doc/5?routing=1
+{
+  "name":"Kathy Baker",
+  "age":18,
+  "gender":"F",
+  "join_field":{
+    "name":"student",
+    "parent":1
+  }
+}
+ 
+# Recherche des documents par ID du document parent
+GET /faculty/_search
+{
+  "query":{
+    "parent_id":{
+      "type":"student",
+      "id":2
+    }
+  }
+}
+
+# Recherche des documents fils à partir du parent (pas d'ID cette fois)
+GET /faculty/_search
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "faculty",
+      "query": {
+        "term": {
+          "name.keyword": {
+            "value": "Sciences"
+          }
+        }
+      }
+    }
+  }
+}
+
+# Recherche des documents fils à partir du parent (pas d'ID cette fois) avec prise en compte des scores
+GET /faculty/_search
+{
+  "query": {
+    "has_parent": {
+      "parent_type": "faculty",
+      "score":true,
+      "query": {
+        "term": {
+          "name.keyword": {
+            "value": "Sciences"
+          }
+        }
+      }
+    }
+  }
+}
+
+# Recherche d'un document paraent à partir des documents fils
+GET /faculty/_search
+{
+  "query": {
+    "has_child": {
+      "type": "student",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "range": {
+                "age": {
+                  "gte": 21
+                }
+              }
+            }
+          ],
+          "should": [
+            {
+              "term": {
+                "gender.keyword": "M"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+# Relations multiples
+PUT /university
+{
+  "mappings": {
+    "properties": {
+      "join_field": {
+        "type": "join",
+        "relations": {
+          "university": [
+            "faculty",
+            "supplier"
+          ],
+          "faculty": [
+            "student"
+          ]
+        }
+      }
+    }
+  }
+}
+
+# Insertion d'une université
+PUT /university/_doc/1
+{
+  "name":"University Team B",
+  "join_field":"university"
+}
+
+
+# Insertion d'une faculté dans l'université
+PUT /university/_doc/3?routing=1
+{
+  "name":"Philosophy",
+  "join_field":{
+    "name":"faculty",
+    "parent":1
+  }
+}
+
+
+# Insertion d'un étudiant
+PUT /university/_doc/8?routing=0
+{
+  "name":"Joe Smith",
+  "join_field":{
+    "name":"student",
+    "parent":0
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

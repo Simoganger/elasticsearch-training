@@ -1,0 +1,7 @@
+================================
+# RESUME
+================================
+
+Ce module présente l'installation de ElasticSearch et Kibana, puis les fichiers de configuration de base de ces deux (02) outils.
+- Le lancement de Kibana se fait avant celui de Elasticsearch parceque Kibana recherche Elasticsearch par défaut sur le port 9200.
+- Par défaut, Elasticsearch est disponible sur le port 9200 tandis que Kibana est disponible sur le port 5601

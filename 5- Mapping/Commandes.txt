@@ -1,0 +1,62 @@
+# Les commandes de cette formation qui utilisent le Mapping sur les types par défaut sont dépréciés dans la version 7.4.2 que j'utilise.
+# Par exemple la commande suivante
+GET /user/default/1
+
+# Est équivalente à
+GET /user/1
+
+# Contrairemnt à ce qui est fait dans le tutoriel de la formation, la création d'un index avec Mapping explicite s'effectue comme suit
+PUT /student
+{
+  "mappings": {
+    "properties": {
+      "age":    { "type": "integer" },  
+      "email":  { "type": "keyword"  }, 
+      "name":   { "type": "text"  }     
+    }
+  }
+}
+
+# L'ajout d'un champ au mapping existant se fait par l'utilisation de la directive PUT comme suit
+# Ajout d'un champ 'matricule' avec pour type 'keyword'
+PUT /student/_mapping
+{
+  "properties": {
+    "matricule": {
+      "type": "keyword"
+    }
+  }
+}
+
+# Pour visualiser le mapping associé à un champ spécifique, on utilise la commande suivante
+GET /student/_mapping/field/email
+
+# Un exemple de Mapping de date
+PUT /student/_mapping
+{
+  "properties": {
+    "birthDate": {
+      "type": "date",
+      "format":"year"
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

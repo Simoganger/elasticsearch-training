@@ -1,0 +1,7 @@
+================================
+# RESUME
+================================
+ 
+ Ce module de formation présente les différentes façon d'aggréger les résultats des recherches. Il existe globalement deux principes d'aggrégation :
+ - Aggrégation simple sur les métriques (somme, moyenne, min, max, ...)
+ - Aggrégation par sceau (bucket) par tranche suivant des filtres

@@ -1,0 +1,11 @@
+================================
+# RESUME
+================================
+
+Ce module présente globalement la suite Elastic Stack avec ses produits suivants:
+1-ElasticSearch: Stoque les données à rechercher
+Kibana: Permet l'analyse et la visualisation des données, fonctionne avec un process (Entrée - Filtres - Sortie)
+Logstash: Récupère les logs depuis les applications, les traite et les transmet à ElasticSearch
+== Ces 3 outils forment la suite ELK Stack
+X-Pack: Ajoute les fonctionnalités supplémentaires à la suite ELK (Sécurité, Alert, Reporting, Machine Learning, Graphes, SQL)
+Beats: Module qui spécifie le type de logs et données à traiter (fileBeat, MetricBeat, etc)

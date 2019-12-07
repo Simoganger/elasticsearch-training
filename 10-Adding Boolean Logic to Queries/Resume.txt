@@ -1,0 +1,5 @@
+================================
+# RESUME
+================================
+
+- Ce module permet d'effectuer des recherches avancées avec l'utilisation des contraintes construites à base des expressions booléenes.
